@@ -1,20 +1,20 @@
 const asyncHandler = require('express-async-handler')
 
-const Task = require('../models/goalModel')
+const Task = require('../models/taskModel')
 
-//@desc     Get goals
-//@route    GET /api/goals
+//@desc     Get tasks
+//@route    GET /api/tasks
 //@access   Private
-const getGoals = asyncHandler(async (req, res) => {
+const getTasks = asyncHandler(async (req, res) => {
 const tasks = await Task.find()
 
     res.status(200).json(tasks);
 })
 
-//@desc     Set goal
-//@route    POST /api/goals
+//@desc     Set task
+//@route    POST /api/tasks
 //@access   Private
-const setGoal = asyncHandler(async (req, res) => {
+const setTask = asyncHandler(async (req, res) => {
     if (!req.body.title) {
         res.status(400)
         throw new Error('Please add a text field')
@@ -27,10 +27,10 @@ const setGoal = asyncHandler(async (req, res) => {
     res.status(200).json(task);
 })
 
-//@desc     Update goal
-//@route    PUT /api/goals/:id
+//@desc     Update task
+//@route    PUT /api/tasks/:id
 //@access   Private
-const updateGoal = asyncHandler(async (req, res) => {
+const updateTask = asyncHandler(async (req, res) => {
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -43,10 +43,10 @@ const updateGoal = asyncHandler(async (req, res) => {
     res.status(200).json(updatedTask);
 })
 
-//@desc     Delete goal
-//@route    DELETE /api/goals
+//@desc     Delete task
+//@route    DELETE /api/tasks
 //@access   Private
-const deleteGoal = asyncHandler(async (req, res) => {
+const deleteTask = asyncHandler(async (req, res) => {
     const task = await Task.findById(req.params.id)
 
     if (!task) {
@@ -60,8 +60,8 @@ const deleteGoal = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    getGoals,
-    setGoal,
-    updateGoal,
-    deleteGoal
+    getTasks,
+    setTask,
+    updateTask,
+    deleteTask
 }
