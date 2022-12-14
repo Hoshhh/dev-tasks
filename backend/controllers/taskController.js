@@ -1,12 +1,14 @@
 const asyncHandler = require('express-async-handler')
+const { globalAgent } = require('http')
 
 const Task = require('../models/taskModel')
+const User = require('../models/userModel')
 
 //@desc     Get tasks
 //@route    GET /api/tasks
 //@access   Private
 const getTasks = asyncHandler(async (req, res) => {
-const tasks = await Task.find()
+const tasks = await Task.find({ user: req.user.id})
 
     res.status(200).json(tasks);
 })
@@ -21,7 +23,8 @@ const setTask = asyncHandler(async (req, res) => {
     }
 
     const task = await Task.create({
-        title: req.body.title //might can remove .title
+        title: req.body.title, 
+        user: req.user.id,
     })
 
     res.status(200).json(task);
@@ -38,6 +41,20 @@ const updateTask = asyncHandler(async (req, res) => {
         throw new Error('Task not found')
     }
 
+    const user = await User.findById(req.user.id)
+
+    //check for user
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    //Make sure the logged in user matches the task user
+    if (task.user.toString() !== user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
+    }
+
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
     res.status(200).json(updatedTask);
@@ -52,6 +69,20 @@ const deleteTask = asyncHandler(async (req, res) => {
     if (!task) {
         res.status(400);
         throw new Error('Task not found')
+    }
+
+    const user = await User.findById(req.user.id)
+
+    //check for user
+    if (!user) {
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    //Make sure the logged in user matches the task user
+    if (task.user.toString() !== user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
     }
 
     await Task.deleteOne(task)
