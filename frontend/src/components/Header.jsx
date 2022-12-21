@@ -9,9 +9,9 @@ function Header() {
     const {user} = useSelector((state) => state.auth)
 
     const onLogout = () => {
-        dispatch(logout())
-        dispatch(reset())
-        navigate('/')
+        dispatch(logout());
+        dispatch(reset());
+        navigate('/');
     }
 
   return (
