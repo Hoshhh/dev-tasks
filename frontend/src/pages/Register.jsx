@@ -122,7 +122,7 @@ function Register() {
           <button type="submit" className="bg-slate-700 w-full text-slate-50 py-2 rounded hover:bg-slate-500 transition-colors mt-4 mb-2">Sign up</button>
           <div className="text-sm">
             Already have an account?
-            <Link className="text-green-500 hover:text-green-300" href="/login"> Login here!</Link>
+            <a className="text-green-500 hover:text-green-300" href="/login"> Login here!</a>
           </div>
         </div>
       </form>
