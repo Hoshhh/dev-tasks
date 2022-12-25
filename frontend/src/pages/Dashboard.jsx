@@ -16,6 +16,8 @@ function Dashboard() {
     (state) => state.tasks
   )
 
+  console.log(tasks)
+
   useEffect(() => {
     if (isError) {
       console.log(message)
@@ -47,6 +49,15 @@ function Dashboard() {
           </h1>
         </section>
         <GoalForm />
+        <div>
+          {tasks.length > 0 ? (
+            <div className='flex justify-center items-center flex-col'>
+              {tasks.map((task) => (
+                <TaskItem key={task._id} task={task} />
+              ))}
+            </div>
+          ) : (<h3>You don't have any tasks.</h3>)}
+        </div>
       </div>
     </>
   )
